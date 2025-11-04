@@ -159,7 +159,7 @@
               "name": "t:names.text",
               "settings": {
                 "text": "<h3><strong>特集一覧</strong></h3>",
-                "width": "fit-content",
+                "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "rte",
