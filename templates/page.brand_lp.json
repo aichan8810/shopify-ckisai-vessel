@@ -17,8 +17,8 @@
           "name": "t:names.heading",
           "settings": {
             "text": "<p>{{ closest.page.title }}</p>",
-            "width": "fit-content",
-            "max_width": "normal",
+            "width": "100%",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "h3",
             "font": "var(--font-body--family)",
@@ -44,7 +44,7 @@
           "settings": {
             "text": "{{ closest.page.content }}",
             "width": "fit-content",
-            "max_width": "normal",
+            "max_width": "none",
             "alignment": "left",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
