@@ -442,7 +442,7 @@
         "image_bi9cFF"
       ],
       "custom_css": [
-        "div{flex-direction: column-reverse}"
+        "@media(max-width: 767px){.section-content-wrapper{flex-direction: column-reverse }}"
       ],
       "name": "t:names.image_with_text",
       "settings": {
