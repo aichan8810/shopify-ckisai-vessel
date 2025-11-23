@@ -15,12 +15,19 @@
   assign has_image_2 = false
   assign has_video_1 = false
   assign has_video_2 = false
+  assign has_image_1_mobile = false
+  assign has_image_2_mobile = false
+  assign has_video_1_mobile = false
+  assign has_video_2_mobile = false
   assign has_image = false
   assign has_video = false
   assign has_video_multiple = false
   assign has_media = false
   assign media_type_1 = section.settings.media_type_1
   assign media_type_2 = section.settings.media_type_2
+  assign media_type_1_mobile = section.settings.media_type_1_mobile
+  assign media_type_2_mobile = section.settings.media_type_2_mobile
+
   if section.settings.image_1 != blank and media_type_1 == 'image'
     assign has_image_1 = true
   endif
@@ -34,13 +41,35 @@
     assign has_video_2 = true
   endif
 
-  if has_image_1 or has_image_2
+  if section.settings.image_1_mobile != blank and media_type_1_mobile == 'image'
+    assign has_image_1_mobile = true
+  endif
+  if section.settings.image_2_mobile != blank and media_type_2_mobile == 'image'
+    assign has_image_2_mobile = true
+  endif
+  if section.settings.video_1_mobile != blank and media_type_1_mobile == 'video'
+    assign has_video_1_mobile = true
+  endif
+  if section.settings.video_2_mobile != blank and media_type_2_mobile == 'video'
+    assign has_video_2_mobile = true
+  endif
+
+  if has_image_1 or has_image_2 or has_image_1_mobile or has_image_2_mobile
     assign has_image = true
   endif
-  if has_video_1 or has_video_2
+  if has_video_1 or has_video_2 or has_video_1_mobile or has_video_2_mobile
     assign has_video = true
   endif
-  if has_video_1 and has_video_2
+
+  assign has_video_1_any = false
+  if has_video_1 or has_video_1_mobile
+    assign has_video_1_any = true
+  endif
+  assign has_video_2_any = false
+  if has_video_2 or has_video_2_mobile
+    assign has_video_2_any = true
+  endif
+  if has_video_1_any and has_video_2_any
     assign has_video_multiple = true
   endif
   if has_image or has_video
@@ -55,62 +84,190 @@
 %}
 
 {% capture media %}
-  {%- if has_image_1 -%}
+  {%- if has_image_1 or has_image_1_mobile -%}
     {% assign media_count = media_count | plus: 1 %}
-    {{
-      section.settings.image_1
-      | image_url: width: 3840
-      | image_tag:
-        width: section.settings.image_1.width,
-        widths: widths,
-        height: section.settings.image_1.height,
-        alt: section.settings.image_1.alt,
-        class: 'hero__image',
-        sizes: sizes
-    }}
+    <picture class="hero__image-wrapper">
+      {%- if has_image_1_mobile -%}
+        <source
+          media="(max-width: 767px)"
+          srcset="
+            {{ section.settings.image_1_mobile | image_url: width: 300 }} 300w,
+            {{ section.settings.image_1_mobile | image_url: width: 450 }} 450w,
+            {{ section.settings.image_1_mobile | image_url: width: 600 }} 600w,
+            {{ section.settings.image_1_mobile | image_url: width: 750 }} 750w
+          "
+          sizes="100vw"
+        >
+      {%- endif -%}
+      {%- if has_image_1 -%}
+        <source
+          media="(min-width: 768px)"
+          srcset="
+            {{ section.settings.image_1 | image_url: width: 750 }} 750w,
+            {{ section.settings.image_1 | image_url: width: 900 }} 900w,
+            {{ section.settings.image_1 | image_url: width: 1050 }} 1050w,
+            {{ section.settings.image_1 | image_url: width: 1200 }} 1200w,
+            {{ section.settings.image_1 | image_url: width: 1350 }} 1350w,
+            {{ section.settings.image_1 | image_url: width: 1500 }} 1500w,
+            {{ section.settings.image_1 | image_url: width: 1650 }} 1650w,
+            {{ section.settings.image_1 | image_url: width: 1800 }} 1800w,
+            {{ section.settings.image_1 | image_url: width: 1950 }} 1950w,
+            {{ section.settings.image_1 | image_url: width: 2000 }} 2000w,
+            {{ section.settings.image_1 | image_url: width: 2500 }} 2500w,
+            {{ section.settings.image_1 | image_url: width: 3000 }} 3000w,
+            {{ section.settings.image_1 | image_url: width: 3500 }} 3500w,
+            {{ section.settings.image_1 | image_url: width: 4000 }} 4000w,
+            {{ section.settings.image_1 | image_url: width: 5000 }} 5000w
+          "
+          sizes="{{ sizes }}"
+        >
+      {%- endif -%}
+      {%- if has_image_1_mobile -%}
+        {{
+          section.settings.image_1_mobile
+          | image_url: width: 750
+          | image_tag:
+            width: section.settings.image_1_mobile.width,
+            height: section.settings.image_1_mobile.height,
+            alt: section.settings.image_1_mobile.alt,
+            class: 'hero__image',
+            loading: 'lazy'
+        }}
+      {%- elsif has_image_1 -%}
+        {{
+          section.settings.image_1
+          | image_url: width: 3840
+          | image_tag:
+            width: section.settings.image_1.width,
+            widths: widths,
+            height: section.settings.image_1.height,
+            alt: section.settings.image_1.alt,
+            class: 'hero__image',
+            sizes: sizes
+        }}
+      {%- endif -%}
+    </picture>
   {%- endif -%}
 
-  {%- if has_video_1 -%}
+  {%- if has_video_1 or has_video_1_mobile -%}
     {% assign media_count = media_count | plus: 1 %}
-    {{
-      section.settings.video_1
-      | video_tag:
-        image_size: '3840x',
-        autoplay: true,
-        loop: true,
-        controls: false,
-        muted: true,
-        class: 'hero__video'
-    }}
+    {%- if has_video_1_mobile -%}
+      {{
+        section.settings.video_1_mobile
+        | video_tag:
+          image_size: '3840x',
+          autoplay: true,
+          loop: true,
+          controls: false,
+          muted: true,
+          class: 'hero__video hero__video--mobile'
+      }}
+    {%- endif -%}
+    {%- if has_video_1 -%}
+      {{
+        section.settings.video_1
+        | video_tag:
+          image_size: '3840x',
+          autoplay: true,
+          loop: true,
+          controls: false,
+          muted: true,
+          class: 'hero__video hero__video--desktop'
+      }}
+    {%- endif -%}
   {%- endif -%}
 
-  {%- if has_image_2 -%}
+  {%- if has_image_2 or has_image_2_mobile -%}
     {% assign media_count = media_count | plus: 1 %}
-    {{
-      section.settings.image_2
-      | image_url: width: 3840
-      | image_tag:
-        width: section.settings.image_2.width,
-        widths: widths,
-        height: section.settings.image_2.height,
-        alt: section.settings.image_2.alt,
-        class: 'hero__image',
-        sizes: sizes
-    }}
+    <picture class="hero__image-wrapper">
+      {%- if has_image_2_mobile -%}
+        <source
+          media="(max-width: 767px)"
+          srcset="
+            {{ section.settings.image_2_mobile | image_url: width: 300 }} 300w,
+            {{ section.settings.image_2_mobile | image_url: width: 450 }} 450w,
+            {{ section.settings.image_2_mobile | image_url: width: 600 }} 600w,
+            {{ section.settings.image_2_mobile | image_url: width: 750 }} 750w
+          "
+          sizes="100vw"
+        >
+      {%- endif -%}
+      {%- if has_image_2 -%}
+        <source
+          media="(min-width: 768px)"
+          srcset="
+            {{ section.settings.image_2 | image_url: width: 750 }} 750w,
+            {{ section.settings.image_2 | image_url: width: 900 }} 900w,
+            {{ section.settings.image_2 | image_url: width: 1050 }} 1050w,
+            {{ section.settings.image_2 | image_url: width: 1200 }} 1200w,
+            {{ section.settings.image_2 | image_url: width: 1350 }} 1350w,
+            {{ section.settings.image_2 | image_url: width: 1500 }} 1500w,
+            {{ section.settings.image_2 | image_url: width: 1650 }} 1650w,
+            {{ section.settings.image_2 | image_url: width: 1800 }} 1800w,
+            {{ section.settings.image_2 | image_url: width: 1950 }} 1950w,
+            {{ section.settings.image_2 | image_url: width: 2000 }} 2000w,
+            {{ section.settings.image_2 | image_url: width: 2500 }} 2500w,
+            {{ section.settings.image_2 | image_url: width: 3000 }} 3000w,
+            {{ section.settings.image_2 | image_url: width: 3500 }} 3500w,
+            {{ section.settings.image_2 | image_url: width: 4000 }} 4000w,
+            {{ section.settings.image_2 | image_url: width: 5000 }} 5000w
+          "
+          sizes="{{ sizes }}"
+        >
+      {%- endif -%}
+      {%- if has_image_2_mobile -%}
+        {{
+          section.settings.image_2_mobile
+          | image_url: width: 750
+          | image_tag:
+            width: section.settings.image_2_mobile.width,
+            height: section.settings.image_2_mobile.height,
+            alt: section.settings.image_2_mobile.alt,
+            class: 'hero__image',
+            loading: 'lazy'
+        }}
+      {%- elsif has_image_2 -%}
+        {{
+          section.settings.image_2
+          | image_url: width: 3840
+          | image_tag:
+            width: section.settings.image_2.width,
+            widths: widths,
+            height: section.settings.image_2.height,
+            alt: section.settings.image_2.alt,
+            class: 'hero__image',
+            sizes: sizes
+        }}
+      {%- endif -%}
+    </picture>
   {%- endif -%}
 
-  {%- if has_video_2 -%}
+  {%- if has_video_2 or has_video_2_mobile -%}
     {% assign media_count = media_count | plus: 1 %}
-    {{
-      section.settings.video_2
-      | video_tag:
-        image_size: '3840x',
-        autoplay: true,
-        loop: true,
-        controls: false,
-        muted: true,
-        class: 'hero__video'
-    }}
+    {%- if has_video_2_mobile -%}
+      {{
+        section.settings.video_2_mobile
+        | video_tag:
+          image_size: '3840x',
+          autoplay: true,
+          loop: true,
+          controls: false,
+          muted: true,
+          class: 'hero__video hero__video--mobile'
+      }}
+    {%- endif -%}
+    {%- if has_video_2 -%}
+      {{
+        section.settings.video_2
+        | video_tag:
+          image_size: '3840x',
+          autoplay: true,
+          loop: true,
+          controls: false,
+          muted: true,
+          class: 'hero__video hero__video--desktop'
+      }}
+    {%- endif -%}
   {%- endif -%}
 
   {% if has_media == false and is_transparent %}
@@ -123,31 +280,131 @@
 {% endcapture %}
 
 {% capture media_blurred %}
-  {% if has_image_1 %}
-    {{
-      section.settings.image_1
-      | image_url: width: 3840
-      | image_tag:
-        width: section.settings.image_1.width,
-        widths: widths,
-        height: section.settings.image_1.height,
-        alt: '',
-        class: 'hero__image',
-        sizes: sizes
-    }}
+  {% if has_image_1 or has_image_1_mobile %}
+    <picture class="hero__image-wrapper">
+      {%- if has_image_1_mobile -%}
+        <source
+          media="(max-width: 767px)"
+          srcset="
+            {{ section.settings.image_1_mobile | image_url: width: 300 }} 300w,
+            {{ section.settings.image_1_mobile | image_url: width: 450 }} 450w,
+            {{ section.settings.image_1_mobile | image_url: width: 600 }} 600w,
+            {{ section.settings.image_1_mobile | image_url: width: 750 }} 750w
+          "
+          sizes="100vw"
+        >
+      {%- endif -%}
+      {%- if has_image_1 -%}
+        <source
+          media="(min-width: 768px)"
+          srcset="
+            {{ section.settings.image_1 | image_url: width: 750 }} 750w,
+            {{ section.settings.image_1 | image_url: width: 900 }} 900w,
+            {{ section.settings.image_1 | image_url: width: 1050 }} 1050w,
+            {{ section.settings.image_1 | image_url: width: 1200 }} 1200w,
+            {{ section.settings.image_1 | image_url: width: 1350 }} 1350w,
+            {{ section.settings.image_1 | image_url: width: 1500 }} 1500w,
+            {{ section.settings.image_1 | image_url: width: 1650 }} 1650w,
+            {{ section.settings.image_1 | image_url: width: 1800 }} 1800w,
+            {{ section.settings.image_1 | image_url: width: 1950 }} 1950w,
+            {{ section.settings.image_1 | image_url: width: 2000 }} 2000w,
+            {{ section.settings.image_1 | image_url: width: 2500 }} 2500w,
+            {{ section.settings.image_1 | image_url: width: 3000 }} 3000w,
+            {{ section.settings.image_1 | image_url: width: 3500 }} 3500w,
+            {{ section.settings.image_1 | image_url: width: 4000 }} 4000w,
+            {{ section.settings.image_1 | image_url: width: 5000 }} 5000w
+          "
+          sizes="{{ sizes }}"
+        >
+      {%- endif -%}
+      {%- if has_image_1_mobile -%}
+        {{
+          section.settings.image_1_mobile
+          | image_url: width: 750
+          | image_tag:
+            width: section.settings.image_1_mobile.width,
+            height: section.settings.image_1_mobile.height,
+            alt: '',
+            class: 'hero__image',
+            loading: 'lazy'
+        }}
+      {%- elsif has_image_1 -%}
+        {{
+          section.settings.image_1
+          | image_url: width: 3840
+          | image_tag:
+            width: section.settings.image_1.width,
+            widths: widths,
+            height: section.settings.image_1.height,
+            alt: '',
+            class: 'hero__image',
+            sizes: sizes
+        }}
+      {%- endif -%}
+    </picture>
   {% endif %}
-  {% if has_image_2 %}
-    {{
-      section.settings.image_2
-      | image_url: width: 3840
-      | image_tag:
-        width: section.settings.image_2.width,
-        widths: widths,
-        height: section.settings.image_2.height,
-        alt: '',
-        class: 'hero__image',
-        sizes: sizes
-    }}
+  {% if has_image_2 or has_image_2_mobile %}
+    <picture class="hero__image-wrapper">
+      {%- if has_image_2_mobile -%}
+        <source
+          media="(max-width: 767px)"
+          srcset="
+            {{ section.settings.image_2_mobile | image_url: width: 300 }} 300w,
+            {{ section.settings.image_2_mobile | image_url: width: 450 }} 450w,
+            {{ section.settings.image_2_mobile | image_url: width: 600 }} 600w,
+            {{ section.settings.image_2_mobile | image_url: width: 750 }} 750w
+          "
+          sizes="100vw"
+        >
+      {%- endif -%}
+      {%- if has_image_2 -%}
+        <source
+          media="(min-width: 768px)"
+          srcset="
+            {{ section.settings.image_2 | image_url: width: 750 }} 750w,
+            {{ section.settings.image_2 | image_url: width: 900 }} 900w,
+            {{ section.settings.image_2 | image_url: width: 1050 }} 1050w,
+            {{ section.settings.image_2 | image_url: width: 1200 }} 1200w,
+            {{ section.settings.image_2 | image_url: width: 1350 }} 1350w,
+            {{ section.settings.image_2 | image_url: width: 1500 }} 1500w,
+            {{ section.settings.image_2 | image_url: width: 1650 }} 1650w,
+            {{ section.settings.image_2 | image_url: width: 1800 }} 1800w,
+            {{ section.settings.image_2 | image_url: width: 1950 }} 1950w,
+            {{ section.settings.image_2 | image_url: width: 2000 }} 2000w,
+            {{ section.settings.image_2 | image_url: width: 2500 }} 2500w,
+            {{ section.settings.image_2 | image_url: width: 3000 }} 3000w,
+            {{ section.settings.image_2 | image_url: width: 3500 }} 3500w,
+            {{ section.settings.image_2 | image_url: width: 4000 }} 4000w,
+            {{ section.settings.image_2 | image_url: width: 5000 }} 5000w
+          "
+          sizes="{{ sizes }}"
+        >
+      {%- endif -%}
+      {%- if has_image_2_mobile -%}
+        {{
+          section.settings.image_2_mobile
+          | image_url: width: 750
+          | image_tag:
+            width: section.settings.image_2_mobile.width,
+            height: section.settings.image_2_mobile.height,
+            alt: '',
+            class: 'hero__image',
+            loading: 'lazy'
+        }}
+      {%- elsif has_image_2 -%}
+        {{
+          section.settings.image_2
+          | image_url: width: 3840
+          | image_tag:
+            width: section.settings.image_2.width,
+            widths: widths,
+            height: section.settings.image_2.height,
+            alt: '',
+            class: 'hero__image',
+            sizes: sizes
+        }}
+      {%- endif -%}
+    </picture>
   {% endif %}
   {% if has_media == false and is_transparent %}
     <placeholder-image
@@ -209,8 +466,12 @@
     {%- endif -%}
     <div
       class="hero__media-wrapper"
-      {%- if section.settings.image_1 != blank -%}
-        style="--hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }}; --hero-media-count: {{ media_count }};"
+      {%- if section.settings.image_1 != blank or section.settings.image_1_mobile != blank -%}
+        {%- if section.settings.image_1 != blank -%}
+          style="--hero-media-aspect-ratio: {{ section.settings.image_1.aspect_ratio }}; --hero-media-count: {{ media_count }};"
+        {%- elsif section.settings.image_1_mobile != blank -%}
+          style="--hero-media-aspect-ratio: {{ section.settings.image_1_mobile.aspect_ratio }}; --hero-media-count: {{ media_count }};"
+        {%- endif -%}
       {%- endif -%}
     >
       {% liquid
@@ -312,6 +573,23 @@
     }
   }
 
+  .hero__image-wrapper {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: block;
+  }
+
+  .hero__image-wrapper img {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center center;
+    z-index: var(--layer-base);
+    overflow: hidden;
+  }
+
   .hero__image,
   .hero__video {
     position: relative;
@@ -321,6 +599,24 @@
     object-position: center center;
     z-index: var(--layer-base);
     overflow: hidden;
+  }
+
+  .hero__video--mobile {
+    display: block;
+  }
+
+  .hero__video--desktop {
+    display: none;
+  }
+
+  @media screen and (min-width: 768px) {
+    .hero__video--mobile {
+      display: none;
+    }
+
+    .hero__video--desktop {
+      display: block;
+    }
   }
 
   .hero__link {
@@ -379,6 +675,7 @@
     overflow: hidden;
   }
 
+  .hero__blurred-image .hero__image-wrapper,
   .hero__blurred-image img {
     position: absolute;
     inset: 0;
@@ -390,14 +687,28 @@
     opacity: var(--blur-opacity);
     transform: var(--blurred-reflection-scale);
     padding-block-end: var(--blurred-reflection-padding-block-end);
+  }
 
-    &:not(:only-child) {
-      width: 50%;
+  .hero__blurred-image .hero__image-wrapper img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    filter: var(--blurred-reflection-filter-blur);
+    opacity: var(--blur-opacity);
+    transform: var(--blurred-reflection-scale);
+    padding-block-end: var(--blurred-reflection-padding-block-end);
+  }
 
-      &:last-child {
-        right: 0;
-        left: auto;
-      }
+  .hero__blurred-image .hero__image-wrapper:not(:only-child),
+  .hero__blurred-image img:not(:only-child) {
+    width: 50%;
+
+    &:last-child {
+      right: 0;
+      left: auto;
     }
   }
 {% endstylesheet %}
@@ -511,6 +822,74 @@
       "id": "video_2",
       "label": "t:settings.video",
       "visible_if": "{{ section.settings.media_type_2 == 'video' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.media_mobile"
+    },
+    {
+      "type": "select",
+      "id": "media_type_1_mobile",
+      "label": "t:settings.type",
+      "options": [
+        {
+          "value": "image",
+          "label": "t:options.image"
+        },
+        {
+          "value": "video",
+          "label": "t:options.video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1_mobile",
+      "label": "t:settings.image",
+      "info": "SP用画像（767px以下で表示）",
+      "visible_if": "{{ section.settings.media_type_1_mobile == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "video_1_mobile",
+      "label": "t:settings.video",
+      "info": "SP用動画（767px以下で表示）",
+      "visible_if": "{{ section.settings.media_type_1_mobile == 'video' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:content.media_2_mobile"
+    },
+    {
+      "type": "select",
+      "id": "media_type_2_mobile",
+      "label": "t:settings.type",
+      "options": [
+        {
+          "value": "image",
+          "label": "t:options.image"
+        },
+        {
+          "value": "video",
+          "label": "t:options.video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2_mobile",
+      "label": "t:settings.image",
+      "info": "SP用画像（767px以下で表示）",
+      "visible_if": "{{ section.settings.media_type_2_mobile == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "video_2_mobile",
+      "label": "t:settings.video",
+      "info": "SP用動画（767px以下で表示）",
+      "visible_if": "{{ section.settings.media_type_2_mobile == 'video' }}"
     },
     {
       "type": "header",

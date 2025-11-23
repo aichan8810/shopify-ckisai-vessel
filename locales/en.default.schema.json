@@ -79,6 +79,8 @@
     "media": "Media",
     "media_1": "Media 1",
     "media_2": "Media 2",
+    "media_mobile": "Mobile Media",
+    "media_2_mobile": "Mobile Media 2",
     "menu": "Menu",
     "mobile_column_optimization": "Columns will automatically optimize for mobile",
     "mobile_layout": "Mobile layout",

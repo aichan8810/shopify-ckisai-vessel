@@ -1,0 +1,130 @@
+<style>
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+  }
+  .news-list__container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+  .news-list__items{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .news-list__item-header{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+  .news-list__item{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: baseline;
+    justify-content: baseline;
+    border-top: 1px solid #e0e0e0;
+    &:last-child{
+      border-bottom: 1px solid #e0e0e0;
+    }
+  }
+  .news-list__item-title{
+    margin: 0;
+  }
+
+</style>
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="
+    section
+    section--{{ section.settings.section_width }}
+    news-list
+  "
+>
+  <div class="news-list__container">
+    <div class="news-list__header">
+      <h2 class="news-list__title">{{ section.settings.title }}</h2>
+    </div>
+    <div class="news-list__content">
+      <div class="news-list__items">
+        {% for article in section.settings.blog.articles limit: 3 %}
+          <a href="{{ article.url }}" class="news-list__item">
+            <div class="news-list__item-header">
+              <span class="news-list__item-date">{{ article.published_at | date: '%B %d, %Y' }}</span>
+              <h3 class="news-list__item-title">{{ article.title }}</h3>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+      <div class="news-list__view-more">
+        <a href="{{ section.settings.blog.url }}" class="news-list__view-more-link">View All</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "News List",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "page-width",
+          "label": "Page Width"
+        },
+        {
+          "value": "full-width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "page-width"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "news_list_item",
+      "name": "News List Item",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "News List"
+    }
+  ]
+}
+{% endschema %}

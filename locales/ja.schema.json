@@ -819,6 +819,8 @@
     "media": "メディア",
     "media_1": "メディア 1",
     "media_2": "メディア 2",
+    "media_mobile": "SP用メディア",
+    "media_2_mobile": "SP用メディア 2",
     "menu": "メニュー",
     "mobile_layout": "モバイルのレイアウト",
     "padding": "余白",
