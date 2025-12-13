@@ -333,9 +333,9 @@
       "name": "t:names.collections_grid",
       "settings": {
         "collection_list": [
-          "apparel",
+          "coffee",
           "ckisai-originals",
-          "lifefood"
+          "apparel"
         ],
         "layout_type": "grid",
         "carousel_on_mobile": true,
@@ -857,7 +857,7 @@
       ],
       "name": "t:names.hero",
       "settings": {
-        "link": "",
+        "link": "shopify://collections/新作商品",
         "open_in_new_tab": false,
         "media_type_1": "image",
         "media_type_2": "image",
