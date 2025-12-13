@@ -1,3 +1,4 @@
+{% assign enabled_payment_types = 'visa,master,american_express,jcb,diners_club,lawson,familymart,ministop,dailyyamazaki,seveneleven,merpay,pay_pay,paidy,rakuten_pay,au_kantan_kessai,alipay,bancontact,fpx,giropay,grabpay,ideal,payco,paysafecard,przelew24,epospay' | remove: ' ' | split: ',' %}
 
 
 <div
@@ -24,7 +25,7 @@
     class="payment-icons__list"
     role="list"
   >
-    {%- for type in shop.enabled_payment_types -%}
+    {%- for type in enabled_payment_types -%}
       <li class="payment-icons__item">
         {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
       </li>
