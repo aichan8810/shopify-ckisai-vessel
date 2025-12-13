@@ -73,7 +73,7 @@
       },
       "17283525856706501396": {
         "type": "shopify://apps/crm-plus-on-line-line-up/blocks/associate-id-banner/dfcb190e-14c5-48cb-b5be-c67ed2b16b21",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "message": "限定情報も配信中！",
           "bannerPosition": "right-bottom"
