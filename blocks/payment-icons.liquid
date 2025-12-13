@@ -12,6 +12,13 @@
   "
   {{ block.shopify_attributes }}
 >
+  <h3 class="component-payment-method__title">
+    さまざまな決済ができます
+  </h3>
+  <p class="component-payment-method__description">
+    {{ shop.name }}では、より多くの皆さまにご購入いただけるよう、多種多様の決済手段をご用意しております。ぜひお買い求めください。
+  </p>
+
   <span class="visually-hidden">{{ 'blocks.payment_methods' | t }}</span>
   <ul
     class="payment-icons__list"
@@ -28,6 +35,23 @@
 {% stylesheet %}
   .payment-icons {
     width: 100%;
+    border: 2px solid;
+    border-image: linear-gradient(to right, #CD4AD0 25%, #F68D24 50%, #036B4E 75%, #131486 100%) 1;
+    padding: 15px 10px;
+    border-radius: 16px;
+    background-color: #fff;
+  }
+
+  .component-payment-method__title {
+    font-size: 16px;
+    font-family: var(--font-heading--family);
+    font-weight: 600;
+  }
+
+  .component-payment-method__description {
+    font-size: 12px;
+    font-family: var(--font-body--family);
+    font-weight: 400;
   }
 
   .payment-icons__list {

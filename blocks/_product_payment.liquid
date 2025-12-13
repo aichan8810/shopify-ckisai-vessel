@@ -1,0 +1,61 @@
+<div class="component-payment-method">
+  <h3 class="component-payment-method__title">
+    さまざまな決済ができます
+  </h3>
+  <p class="component-payment-method__description">
+    {{ shop.name }}では、より多くの皆さまにご購入いただけるよう、多種多様の決済手段をご用意しております。ぜひお買い求めください。
+  </p>
+  <ul class="component-payment-method__list">
+    {% for type in shop.enabled_payment_types %}
+      <li class="component-payment-method__item">
+        {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+<style>
+  .component-payment-method {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid linear-gradient(to right, #CD4AD0 25%, #F68D24 50%, #036B4E 75%, #131486 100%);
+  }
+  .component-payment-method__title {
+    font-size: var(--font-size--2xl);
+    font-weight: 600;
+  }
+  .component-payment-method__description {
+    font-size: var(--font-size--md);
+    font-weight: 400;
+  }
+  .component-payment-method__list {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+  .component-payment-method__item {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Payment Method",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Payment Method"
+      }
+    ]
+  }
+{% endschema %}
