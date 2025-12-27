@@ -270,7 +270,7 @@
                   "type": "product-description",
                   "name": "Product description",
                   "settings": {
-                    "text": "{{ closest.product.description }}",
+                    "text": "<p>{{ closest.product.metafields.custom.short_introduction | metafield_tag }}</p>",
                     "width": "100%",
                     "max_width": "normal",
                     "alignment": "left",
@@ -365,6 +365,44 @@
                     "padding-inline-end": 0
                   },
                   "blocks": {
+                    "accordion_row_CRxYzD": {
+                      "type": "_accordion-row",
+                      "name": "t:names.accordion_row",
+                      "settings": {
+                        "heading": "商品説明",
+                        "open_by_default": false
+                      },
+                      "blocks": {
+                        "text_BRBKzL": {
+                          "type": "text",
+                          "settings": {
+                            "text": "{{ closest.product.description }}",
+                            "width": "100%",
+                            "max_width": "normal",
+                            "alignment": "left",
+                            "type_preset": "rte",
+                            "font": "var(--font-body--family)",
+                            "font_size": "1rem",
+                            "line_height": "normal",
+                            "letter_spacing": "normal",
+                            "case": "none",
+                            "wrap": "pretty",
+                            "color": "var(--color-foreground)",
+                            "background": false,
+                            "background_color": "#00000026",
+                            "corner_radius": 0,
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "text_BRBKzL"
+                      ]
+                    },
                     "accordion_row_WyAjHK": {
                       "type": "_accordion-row",
                       "settings": {
@@ -441,6 +479,7 @@
                     }
                   },
                   "block_order": [
+                    "accordion_row_CRxYzD",
                     "accordion_row_WyAjHK",
                     "accordion_row_xktep7"
                   ]
