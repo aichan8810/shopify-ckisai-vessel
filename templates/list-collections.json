@@ -155,9 +155,7 @@
       ],
       "name": "t:names.collections_grid",
       "settings": {
-        "collection_list": [
-          "lifefood"
-        ],
+        "collection_list": [],
         "layout_type": "grid",
         "carousel_on_mobile": true,
         "columns": 3,
