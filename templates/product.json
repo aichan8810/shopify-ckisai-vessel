@@ -405,6 +405,7 @@
                     },
                     "accordion_row_WyAjHK": {
                       "type": "_accordion-row",
+                      "disabled": true,
                       "settings": {
                         "heading": "CARE & MAINTENANCE",
                         "open_by_default": false
@@ -443,14 +444,37 @@
                     "accordion_row_xktep7": {
                       "type": "_accordion-row",
                       "settings": {
-                        "heading": "SHIPPING & RETURNS",
+                        "heading": "配送について",
                         "open_by_default": false
                       },
                       "blocks": {
+                        "image_bMcnGr": {
+                          "type": "image",
+                          "name": "t:names.image",
+                          "settings": {
+                            "image": "shopify://shop_images/ChatGPT_Image_2025_12_31_11_55_48_41bd6dda-5606-4704-b799-32379bf0a2b8.png",
+                            "link": "",
+                            "image_ratio": "adapt",
+                            "width": "fill",
+                            "custom_width": 100,
+                            "width_mobile": "fill",
+                            "custom_width_mobile": 100,
+                            "height": "fit",
+                            "border": "none",
+                            "border_width": 1,
+                            "border_opacity": 100,
+                            "border_radius": 0,
+                            "padding-block-start": 0,
+                            "padding-block-end": 0,
+                            "padding-inline-start": 0,
+                            "padding-inline-end": 0
+                          },
+                          "blocks": {}
+                        },
                         "text_6rQYtf": {
                           "type": "text",
                           "settings": {
-                            "text": "<p>We strive to process and ship all orders in a timely manner, working diligently to ensure that your items are on their way to you as soon as possible. Need to return something? Just let us know. </p>",
+                            "text": "<p>Ckisaiは学生や社会人なりたてのお客様にも安心してお買い求めいただけるよう、最大限努力をした配送料金設計を行なっております。</p><p>個人商店なのでこれ以上安くできないのが悔やみです。</p>",
                             "width": "100%",
                             "max_width": "normal",
                             "alignment": "left",
@@ -465,7 +489,7 @@
                             "background": false,
                             "background_color": "#00000026",
                             "corner_radius": 0,
-                            "padding-block-start": 0,
+                            "padding-block-start": 15,
                             "padding-block-end": 0,
                             "padding-inline-start": 0,
                             "padding-inline-end": 0
@@ -474,6 +498,7 @@
                         }
                       },
                       "block_order": [
+                        "image_bMcnGr",
                         "text_6rQYtf"
                       ]
                     }
